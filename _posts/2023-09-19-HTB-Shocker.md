@@ -7,13 +7,13 @@ title: "HTB Shocker write-up"
 
 `nmap` routine shows 2 TCP ports open on the target
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094035274/c913388e-a8d8-40b3-af52-2428eaa47c3b.png align="center")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094035274/c913388e-a8d8-40b3-af52-2428eaa47c3b.png)
 
 directory enumeration on the Apache server is performed via `gobuster`
 
 > Different wordlists may impact enumeration results
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094170011/98440997-56ad-4a85-affb-ab967b6c23ed.png align="center")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094170011/98440997-56ad-4a85-affb-ab967b6c23ed.png)
 
 > `/cgi-bin` directory was discovered however the directory itself is not accessible (error code 403)
 
@@ -21,7 +21,7 @@ while we get a `403` trying to access `/cgi-bin` we could do a further dirbust t
 
 > always enumerate harder
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094267335/d9239033-d3a2-4956-a592-2088a5ce4f9a.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094267335/d9239033-d3a2-4956-a592-2088a5ce4f9a.png)
 
 > gobuster `-x` allows appending of file types, in this case according to the hints `/cgi-bin` is where apache stores scripts (`.pl, .sh` etc.) ref: [cgi enum wordlist](https://github.com/orwagodfather/WordList/blob/main/cgi-bin.txt) for more possible scripts that can be found
 
@@ -31,19 +31,19 @@ we notice that the Apache server is running an older version during recon phase,
 
 to test whether certain exploits are applicable we can first attempt to test our hypothesis using `nmap` scripts
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094289067/9b6d360f-308e-4739-aeeb-98631bf6854f.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094289067/9b6d360f-308e-4739-aeeb-98631bf6854f.png)
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094294056/cf79f0d1-554f-4da4-ac39-03e5cdd1f9ca.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094294056/cf79f0d1-554f-4da4-ac39-03e5cdd1f9ca.png)
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094298992/86a826fc-8045-42d9-bdc4-1a32413e7009.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094298992/86a826fc-8045-42d9-bdc4-1a32413e7009.png)
 
 knowing the server is indeed vulnerable, we can try to run to exploit to gain foothold
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094315245/6b8f3624-178d-43b9-b516-fc9f41fe0576.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094315245/6b8f3624-178d-43b9-b516-fc9f41fe0576.png)
 
 > some errors were caught and after some "try hardering" it was related to the exploit being written in python2
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094380361/6aea2aab-9941-4035-b33f-e9a5cabbf052.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094380361/6aea2aab-9941-4035-b33f-e9a5cabbf052.png)
 
 after successfully configuring the payload, we can access the user flag
 
@@ -51,11 +51,11 @@ after successfully configuring the payload, we can access the user flag
 
 due to the box being an easy one, this process is very much a low-hanging fruit
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094436484/b9e595fa-710c-49af-8dc1-45d94c88dcbc.png align="center")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094436484/b9e595fa-710c-49af-8dc1-45d94c88dcbc.png)
 
 a quick GTFObins tour and we can successfully escalate to root
 
-![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094449118/924b1f2e-e697-4afa-853b-4455d70e233a.png align="left")
+![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094449118/924b1f2e-e697-4afa-853b-4455d70e233a.png)
 
 ## Alternative method
 
