@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Options
+title: HTB Shocker write-up
 ---
 
 # **Recon**
