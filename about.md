@@ -1,2 +1,2 @@
-idk wtf im doing
-![i hired this guy to stare at you](https://tenor.com/view/the-yapper-snow-leopard-yap-cute-snow-leopard-snep-gif-49426886885027479)
+idk what im doing half of the time but here we are
+![i hired this guy to stare at you](https://media1.tenor.com/m/AK-ZfeMirpcAAAAC/the-yapper-snow-leopard-yap.gif)
