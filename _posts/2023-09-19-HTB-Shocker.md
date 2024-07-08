@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HTB Shocker write-up
+title: "HTB Shocker write-up"
 ---
 
 # **Recon**
