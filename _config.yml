@@ -2,7 +2,7 @@
 title: sudonap
 url: https://sudonap.github.io/
 paginate: 1
-baseurl: "/about"
+baseurl: ""
 permalink: pretty
 
 # Gems
