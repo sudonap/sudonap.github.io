@@ -1,6 +1,6 @@
 # Setup
 title: sudonap
-url: https://sudonap.github.io/
+url:
 paginate: 1
 baseurl: ""
 permalink: pretty
