@@ -1,3 +1,8 @@
+---
+layout: post
+title: Options
+---
+
 # **Recon**
 
 `nmap` routine shows 2 TCP ports open on the target
