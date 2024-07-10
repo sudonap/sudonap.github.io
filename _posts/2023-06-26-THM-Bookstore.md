@@ -1,3 +1,8 @@
+---
+layout: post
+title: "TryHackMe - Bookstore walkthrough"
+---
+
 # Recon
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1687936687528/03137f46-e7f8-44b4-a587-9b0630f6c9a8.png )
