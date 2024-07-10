@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "HTB Shocker write-up"
+title: "TryHackMe - Alfred walkthrough without metasploit"
 ---
 
-## Intro
+# Intro
 
 Just to get things clear, I am a total noob so take the information provided with a generous pinch of salt.
 
@@ -11,7 +11,7 @@ This post is meant for documentation purposes and I wanted to share it because m
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1687792699119/afd6c737-6ecc-4256-aa15-8696fc5b792a.png)
 
-## Recon
+# Recon
 
 ```bash
 nmap -sCV -Pn $TARGET_IP
@@ -57,9 +57,7 @@ You should be able to obtain a PowerShell with your `nc` listener once you press
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1687794785108/ed33ce31-1267-4867-8262-bff85b204320.png )
 
-## Privilege Escalation
-
-This is where I spend the most amount of time as I was trying to avoid using meterpreter.
+# Privilege Escalation
 
 `whoami /priv` reveals that `SeDebugPrivilege, SeImpersonatePrivilege` are enabled which could allow for a token impersonation attempt.
 
@@ -99,11 +97,11 @@ With the privileged shell, navigate to `C:\Windows\System32\config` to obtain th
 
 ![](https://cdn.hashnode.com/res/hashnode/image/upload/v1687795814991/9b821ff0-a1db-442a-9c25-e9b809a4967c.png )
 
-## Detours (Not part of the walkthrough)
+# Detours (Not part of the walkthrough)
 
 I will share what I tried and failed in this section. Due to my skill level, most of the conclusions made will likely be wrong. Feel free to point me in the right direction so I can learn more about the topic.
 
-### GodPotato
+## GodPotato
 
 After looking through the [GodPotato](https://github.com/BeichenDream/GodPotato) GitHub page, I assumed that the tool has some level of dependency on the target's .NET framework version. A quick ChatGPT tour gave me a PowerShell command to check for the version on the target.
 
@@ -115,7 +113,7 @@ During my trial and error phase, I loaded both the NET2 and NET35 executables to
 
 After further research on the nature of the exploit, I suspect that it has something to do with how the challenge machine was set up. As far as I know, the potato family of exploits relies on tricking the `NT AUTHORITY\SYSTEM` account into authenticating via NTLM. This was as far as I could go in terms of finding out why the tool did not work for this machine as I have reached the limit of my understanding on the topic. However, I suspect that there might be methods to check for compatibility with this tool similar to that of the .NET framework version check above. My guess is something along the lines of checking whether the service required for this exploit is running on the target machine.
 
-### PrintSpoofer
+## PrintSpoofer
 
 During the recon phase, we concluded that the target machine is running x64 Windows 7 so I served the 64-bit version of the [PrintSpoofer](https://github.com/itm4n/PrintSpoofer) executable onto the target machine.
 
